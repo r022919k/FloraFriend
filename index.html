@@ -14,7 +14,7 @@
   </head>
   <body>
     <header class="app-header">
-      <h1>FloraFriend</h1>
+      <h1>Flora Friend</h1>
       <p>Common species in England — hedgerow, woodland, park, and churchyard. Flip cards, then quiz yourself.</p>
     </header>
 
@@ -34,8 +34,8 @@
       <label>
         Order
         <select id="shuffle" aria-label="Order">
+	  <option value="shuffled">Shuffled</option>
           <option value="stable">List order</option>
-          <option value="shuffled">Shuffled</option>
         </select>
       </label>
     </div>
@@ -57,6 +57,7 @@
               <h2 class="common-name"></h2>
               <p class="sci-name"></p>
               <p class="hint"></p>
+              <button type="button" id="btn-learn-more" class="learn-more">Learn more</button>
             </div>
           </div>
         </div>
@@ -78,17 +79,45 @@
           <div id="quiz-options" class="quiz-options"></div>
           <div id="quiz-feedback" class="quiz-feedback" role="status"></div>
           <div class="nav-row" style="margin-top: 1rem">
+            <button type="button" id="quiz-learn-more" class="ghost">Learn more</button>
             <button type="button" id="quiz-next" class="primary hidden">Next question</button>
           </div>
         </div>
       </section>
+
+      <section id="learn-more-panel" class="learn-more-panel hidden" aria-live="polite">
+        <div class="learn-more-header">
+          <h3 id="learn-more-title">Learn more</h3>
+          <button type="button" id="learn-more-close" class="ghost">Close</button>
+        </div>
+        <p id="learn-more-sci" class="learn-more-sci"></p>
+        <div class="learn-more-meta">
+          <span id="learn-more-kind" class="pill"></span>
+          <span id="learn-more-progress" class="pill"></span>
+        </div>
+        <div class="learn-more-facts">
+          <h4 class="learn-more-sub">Leaves</h4>
+          <p id="learn-more-leaf" class="learn-more-fact"></p>
+          <h4 class="learn-more-sub">Bark &amp; stems</h4>
+          <p id="learn-more-bark" class="learn-more-fact"></p>
+          <h4 class="learn-more-sub">Fruit &amp; seeds</h4>
+          <p id="learn-more-fruit" class="learn-more-fact"></p>
+          <h4 class="learn-more-sub">Flowering &amp; fruiting</h4>
+          <p id="learn-more-season" class="learn-more-fact"></p>
+          <h4 class="learn-more-sub">Habitat in England</h4>
+          <p id="learn-more-habitat" class="learn-more-fact"></p>
+        </div>
+        <h4 class="learn-more-sub">Quick ID (from the card)</h4>
+        <p id="learn-more-hint" class="learn-more-hint"></p>
+        <p id="learn-more-similar" class="learn-more-similar"></p>
+      </section>
     </main>
 
     <footer>
-      Photos are served from <code>upload.wikimedia.org</code> (Wikimedia Commons; various open licences).</code>.
-    </footer>
+      Photos are served from <code>upload.wikimedia.org</code> (Wikimedia Commons; various open licences).    </footer>
 
     <script src="data/plants.js"></script>
+    <script src="data/plant-details.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

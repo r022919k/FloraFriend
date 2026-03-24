@@ -1,5 +1,6 @@
 (function () {
   const plants = window.PLANTS || [];
+  const plantDetails = window.PLANT_DETAILS || {};
   const STORAGE_KEY = "tree-flashcards-stats-v1";
 
   const els = {
@@ -17,11 +18,26 @@
     btnNext: document.getElementById("btn-next"),
     btnKnown: document.getElementById("btn-known"),
     btnHard: document.getElementById("btn-hard"),
+    btnLearnMore: document.getElementById("btn-learn-more"),
     quizImg: document.getElementById("quiz-img"),
     quizOptions: document.getElementById("quiz-options"),
     quizFeedback: document.getElementById("quiz-feedback"),
     quizNext: document.getElementById("quiz-next"),
-    scoreQuiz: document.getElementById("score-quiz")
+    quizLearnMore: document.getElementById("quiz-learn-more"),
+    scoreQuiz: document.getElementById("score-quiz"),
+    learnMorePanel: document.getElementById("learn-more-panel"),
+    learnMoreTitle: document.getElementById("learn-more-title"),
+    learnMoreSci: document.getElementById("learn-more-sci"),
+    learnMoreKind: document.getElementById("learn-more-kind"),
+    learnMoreProgress: document.getElementById("learn-more-progress"),
+    learnMoreLeaf: document.getElementById("learn-more-leaf"),
+    learnMoreBark: document.getElementById("learn-more-bark"),
+    learnMoreFruit: document.getElementById("learn-more-fruit"),
+    learnMoreSeason: document.getElementById("learn-more-season"),
+    learnMoreHabitat: document.getElementById("learn-more-habitat"),
+    learnMoreHint: document.getElementById("learn-more-hint"),
+    learnMoreSimilar: document.getElementById("learn-more-similar"),
+    learnMoreClose: document.getElementById("learn-more-close")
   };
 
   let deck = [...plants];
@@ -94,6 +110,44 @@
 
   function currentPlant() {
     return deck[index];
+  }
+
+  function getPlantDetails(plant) {
+    const row = plantDetails[plant.id] || {};
+    const fallback = "Details not added for this species yet — see data/plant-details.js.";
+    return {
+      leaf: row.leaf || fallback,
+      bark: row.bark || fallback,
+      fruit: row.fruit || fallback,
+      season: row.season || fallback,
+      habitat: row.habitat || fallback
+    };
+  }
+
+  function openLearnMore(plant) {
+    if (!plant) return;
+    const similar = plants
+      .filter((x) => x.id !== plant.id && x.kind === plant.kind)
+      .slice(0, 3)
+      .map((x) => x.common);
+    const knownCount = stats.known[plant.id] || 0;
+    const hardCount = stats.hard[plant.id] || 0;
+
+    els.learnMoreTitle.textContent = plant.common;
+    els.learnMoreSci.textContent = plant.scientific;
+    els.learnMoreKind.textContent = plant.kind === "tree" ? "Tree" : "Shrub";
+    els.learnMoreProgress.textContent = `Your progress: known ${knownCount}, review ${hardCount}`;
+    const d = getPlantDetails(plant);
+    els.learnMoreLeaf.textContent = d.leaf;
+    els.learnMoreBark.textContent = d.bark;
+    els.learnMoreFruit.textContent = d.fruit;
+    els.learnMoreSeason.textContent = d.season;
+    els.learnMoreHabitat.textContent = d.habitat;
+    els.learnMoreHint.textContent = plant.hint;
+    els.learnMoreSimilar.textContent =
+      similar.length > 0 ? `Similar ${plant.kind}s in this deck: ${similar.join(", ")}.` : "No similar species available.";
+    els.learnMorePanel.classList.remove("hidden");
+    els.learnMorePanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function renderStudy() {
@@ -221,6 +275,12 @@
   els.btnNext.addEventListener("click", () => bumpIndex(1));
   els.btnKnown.addEventListener("click", () => markKnown("known"));
   els.btnHard.addEventListener("click", () => markKnown("hard"));
+  els.btnLearnMore.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openLearnMore(currentPlant());
+  });
+  els.quizLearnMore.addEventListener("click", () => openLearnMore(quiz.current));
+  els.learnMoreClose.addEventListener("click", () => els.learnMorePanel.classList.add("hidden"));
   els.quizNext.addEventListener("click", () => startQuizRound());
 
   document.addEventListener("keydown", (e) => {
