@@ -57,9 +57,12 @@
               <h2 class="common-name"></h2>
               <p class="sci-name"></p>
               <p class="hint"></p>
-              <button type="button" id="btn-learn-more" class="learn-more">Learn more</button>
+              <p class="card-learn-more-tip">Full notes: use the button just below the card.</p>
             </div>
           </div>
+        </div>
+        <div id="study-learn-more-row" class="nav-row study-learn-more-row hidden" aria-hidden="true">
+          <button type="button" id="btn-learn-more" class="primary learn-more-wide">Learn more</button>
         </div>
         <div class="nav-row">
           <button type="button" id="btn-prev" class="ghost">← Previous</button>
@@ -78,10 +81,10 @@
           <img id="quiz-img" class="quiz-image" src="" alt="" width="900" height="400" />
           <div id="quiz-options" class="quiz-options"></div>
           <div id="quiz-feedback" class="quiz-feedback" role="status"></div>
-          <div class="nav-row" style="margin-top: 1rem">
-            <button type="button" id="quiz-learn-more" class="ghost">Learn more</button>
-            <button type="button" id="quiz-next" class="primary hidden">Next question</button>
-          </div>
+        </div>
+        <div class="nav-row quiz-actions" id="quiz-actions">
+          <button type="button" id="quiz-learn-more" class="ghost quiz-learn-btn">Learn more</button>
+          <button type="button" id="quiz-next" class="primary hidden">Next question</button>
         </div>
       </section>
 

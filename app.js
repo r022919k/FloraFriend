@@ -18,6 +18,7 @@
     btnNext: document.getElementById("btn-next"),
     btnKnown: document.getElementById("btn-known"),
     btnHard: document.getElementById("btn-hard"),
+    studyLearnMoreRow: document.getElementById("study-learn-more-row"),
     btnLearnMore: document.getElementById("btn-learn-more"),
     quizImg: document.getElementById("quiz-img"),
     quizOptions: document.getElementById("quiz-options"),
@@ -104,12 +105,24 @@
     if (study) {
       renderStudy();
     } else {
+      els.studyLearnMoreRow?.classList.add("hidden");
+      els.studyLearnMoreRow?.setAttribute("aria-hidden", "true");
       startQuizRound();
     }
   }
 
   function currentPlant() {
     return deck[index];
+  }
+
+  /** Study “Learn more” sits outside the 3D card — iOS Safari often misses taps inside rotated faces. */
+  function syncStudyLearnMore() {
+    if (!els.studyLearnMoreRow) return;
+    const p = currentPlant();
+    const flipped = els.card.classList.contains("flipped");
+    const show = getMode() === "study" && Boolean(p) && flipped;
+    els.studyLearnMoreRow.classList.toggle("hidden", !show);
+    els.studyLearnMoreRow.setAttribute("aria-hidden", show ? "false" : "true");
   }
 
   function getPlantDetails(plant) {
@@ -154,6 +167,8 @@
     const p = currentPlant();
     if (!p) {
       els.progress.textContent = "No plants match this filter.";
+      els.studyLearnMoreRow?.classList.add("hidden");
+      els.studyLearnMoreRow?.setAttribute("aria-hidden", "true");
       return;
     }
     els.progress.textContent = `Card ${index + 1} of ${deck.length}`;
@@ -176,6 +191,8 @@
 
     els.btnPrev.disabled = index === 0;
     els.btnNext.disabled = index >= deck.length - 1;
+
+    syncStudyLearnMore();
   }
 
   function randomChoices(correct, count) {
@@ -255,28 +272,17 @@
     bumpIndex(1);
   }
 
-  function isInteractiveTarget(target) {
-    return target instanceof Element && Boolean(target.closest("button, a, input, select, textarea, label"));
-  }
-
-  function handleLearnMoreActivate(event, plant) {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    openLearnMore(plant);
-  }
-
   els.card.addEventListener("click", (event) => {
     if (getMode() !== "study") return;
-    if (isInteractiveTarget(event.target)) return;
     els.card.classList.toggle("flipped");
+    syncStudyLearnMore();
   });
 
   els.card.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       els.card.classList.toggle("flipped");
+      syncStudyLearnMore();
     }
   });
 
@@ -288,10 +294,23 @@
   els.btnNext.addEventListener("click", () => bumpIndex(1));
   els.btnKnown.addEventListener("click", () => markKnown("known"));
   els.btnHard.addEventListener("click", () => markKnown("hard"));
-  els.btnLearnMore.addEventListener("click", (e) => handleLearnMoreActivate(e, currentPlant()));
-  els.btnLearnMore.addEventListener("touchend", (e) => handleLearnMoreActivate(e, currentPlant()), { passive: false });
-  els.quizLearnMore.addEventListener("click", (e) => handleLearnMoreActivate(e, quiz.current));
-  els.quizLearnMore.addEventListener("touchend", (e) => handleLearnMoreActivate(e, quiz.current), { passive: false });
+  els.btnLearnMore.addEventListener("click", () => openLearnMore(currentPlant()));
+
+  let lastQuizLearnMs = 0;
+  function activateQuizLearnMore(e) {
+    if (e && e.type === "touchend") {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const now = Date.now();
+    if (now - lastQuizLearnMs < 450) return;
+    lastQuizLearnMs = now;
+    if (!quiz.current) return;
+    openLearnMore(quiz.current);
+  }
+  els.quizLearnMore.addEventListener("touchend", activateQuizLearnMore, { passive: false });
+  els.quizLearnMore.addEventListener("click", activateQuizLearnMore);
+
   els.learnMoreClose.addEventListener("click", () => els.learnMorePanel.classList.add("hidden"));
   els.quizNext.addEventListener("click", () => startQuizRound());
 
@@ -299,7 +318,10 @@
     if (getMode() !== "study" || document.activeElement?.tagName === "SELECT") return;
     if (e.key === "ArrowLeft") bumpIndex(-1);
     if (e.key === "ArrowRight") bumpIndex(1);
-    if (e.key === "f" || e.key === "F") els.card.classList.toggle("flipped");
+    if (e.key === "f" || e.key === "F") {
+      els.card.classList.toggle("flipped");
+      syncStudyLearnMore();
+    }
   });
 
   els.card.setAttribute("tabindex", "0");
