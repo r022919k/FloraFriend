@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>English trees & shrubs — flashcards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>English trees & shrubs</h1>
+      <p>Common species in England — hedgerow, woodland, park, and churchyard. Flip cards, then quiz yourself.</p>
+    </header>
+
+    <div class="toolbar">
+      <div class="mode-tabs" role="tablist" aria-label="Mode">
+        <button type="button" id="mode-study" role="tab" aria-selected="true">Study</button>
+        <button type="button" id="mode-quiz" role="tab" aria-selected="false">Quiz</button>
+      </div>
+      <label>
+        Show
+        <select id="filter" aria-label="Filter by type">
+          <option value="all">Trees &amp; shrubs</option>
+          <option value="tree">Trees only</option>
+          <option value="shrub">Shrubs only</option>
+        </select>
+      </label>
+      <label>
+        Order
+        <select id="shuffle" aria-label="Order">
+          <option value="stable">List order</option>
+          <option value="shuffled">Shuffled</option>
+        </select>
+      </label>
+    </div>
+
+    <main>
+      <section id="study-section" aria-label="Study mode">
+        <p class="progress" id="progress"></p>
+        <div class="scene">
+          <div class="card" id="flashcard">
+            <div class="card-face card-front">
+              <div class="card-image-wrap">
+                <span class="loading" id="card-loading">Loading photo…</span>
+                <img id="card-img" src="" alt="" width="900" height="600" />
+              </div>
+              <div class="card-caption">Tap the card or press <kbd>F</kbd> to reveal the name</div>
+            </div>
+            <div class="card-face card-back">
+              <span class="kind-badge"></span>
+              <h2 class="common-name"></h2>
+              <p class="sci-name"></p>
+              <p class="hint"></p>
+            </div>
+          </div>
+        </div>
+        <div class="nav-row">
+          <button type="button" id="btn-prev" class="ghost">← Previous</button>
+          <button type="button" id="btn-next" class="ghost">Next →</button>
+        </div>
+        <div class="nav-row">
+          <button type="button" id="btn-known" class="primary">Got it — next</button>
+          <button type="button" id="btn-hard" class="ghost">Review again</button>
+        </div>
+        <p class="study-hint">Keyboard: ← → navigate, F flip. “Got it” / “Review” saves a simple count in your browser.</p>
+      </section>
+
+      <section id="quiz-section" class="hidden" aria-label="Quiz mode">
+        <p class="score-line" id="score-quiz"></p>
+        <div class="quiz-panel">
+          <img id="quiz-img" class="quiz-image" src="" alt="" width="900" height="400" />
+          <div id="quiz-options" class="quiz-options"></div>
+          <div id="quiz-feedback" class="quiz-feedback" role="status"></div>
+          <div class="nav-row" style="margin-top: 1rem">
+            <button type="button" id="quiz-next" class="primary hidden">Next question</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Photos are served from <code>upload.wikimedia.org</code> (Wikimedia Commons; various open licences). For offline use or your own photos,
+      edit <code>data/plants.js</code> and set <code>image</code> to a local path, e.g. <code>./images/oak.jpg</code>.
+    </footer>
+
+    <script src="data/plants.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

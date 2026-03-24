@@ -1,0 +1,356 @@
+:root {
+  --bg: #0f1410;
+  --bg-elevated: #1a221a;
+  --surface: #243024;
+  --text: #e8eee4;
+  --muted: #9aaa94;
+  --accent: #7cb87c;
+  --accent-dim: #4a7a4a;
+  --warn: #c9a227;
+  --danger: #c45c5c;
+  --radius: 14px;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(74, 122, 74, 0.25), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(30, 50, 30, 0.5), transparent);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+}
+
+.app-header {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 0.5rem;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.toolbar {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+select,
+button {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid var(--surface);
+  background: var(--bg-elevated);
+  color: var(--text);
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+select:focus,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button.primary {
+  background: linear-gradient(160deg, var(--accent-dim), #355a35);
+  border-color: var(--accent-dim);
+}
+
+button.ghost {
+  background: transparent;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg-elevated);
+  padding: 0.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--surface);
+}
+
+.mode-tabs button {
+  border: none;
+  background: transparent;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+}
+
+.mode-tabs button[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--accent);
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0.5rem 1.25rem 2rem;
+}
+
+.progress {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+/* Flip card */
+.scene {
+  perspective: 1200px;
+  margin: 0 auto 1rem;
+  max-width: 420px;
+  min-height: 480px;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--surface);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  padding: 1.25rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.card-image-wrap {
+  flex: 1;
+  min-height: 320px;
+  background: #0a0d0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-image-wrap .loading {
+  position: absolute;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.card-caption {
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+  border-top: 1px solid var(--surface);
+}
+
+.card-back .common-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.card-back .sci-name {
+  font-style: italic;
+  color: var(--accent);
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+}
+
+.card-back .kind-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.card-back .hint {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
+
+.nav-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.study-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+/* Quiz */
+.quiz-panel {
+  background: var(--bg-elevated);
+  border-radius: var(--radius);
+  border: 1px solid var(--surface);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+
+.quiz-image {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #0a0d0a;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz-options button {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+}
+
+.quiz-options button.correct {
+  border-color: var(--accent);
+  background: rgba(124, 184, 124, 0.15);
+}
+
+.quiz-options button.wrong {
+  border-color: var(--danger);
+  background: rgba(196, 92, 92, 0.12);
+}
+
+.quiz-feedback {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  display: none;
+}
+
+.quiz-feedback.visible {
+  display: block;
+}
+
+.quiz-feedback.ok {
+  background: rgba(124, 184, 124, 0.12);
+  border: 1px solid var(--accent-dim);
+}
+
+.quiz-feedback.bad {
+  background: rgba(196, 92, 92, 0.1);
+  border: 1px solid var(--danger);
+}
+
+.score-line {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+footer {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.hidden {
+  display: none !important;
+}
