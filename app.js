@@ -255,8 +255,21 @@
     bumpIndex(1);
   }
 
-  els.card.addEventListener("click", () => {
+  function isInteractiveTarget(target) {
+    return target instanceof Element && Boolean(target.closest("button, a, input, select, textarea, label"));
+  }
+
+  function handleLearnMoreActivate(event, plant) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    openLearnMore(plant);
+  }
+
+  els.card.addEventListener("click", (event) => {
     if (getMode() !== "study") return;
+    if (isInteractiveTarget(event.target)) return;
     els.card.classList.toggle("flipped");
   });
 
@@ -275,11 +288,10 @@
   els.btnNext.addEventListener("click", () => bumpIndex(1));
   els.btnKnown.addEventListener("click", () => markKnown("known"));
   els.btnHard.addEventListener("click", () => markKnown("hard"));
-  els.btnLearnMore.addEventListener("click", (e) => {
-    e.stopPropagation();
-    openLearnMore(currentPlant());
-  });
-  els.quizLearnMore.addEventListener("click", () => openLearnMore(quiz.current));
+  els.btnLearnMore.addEventListener("click", (e) => handleLearnMoreActivate(e, currentPlant()));
+  els.btnLearnMore.addEventListener("touchend", (e) => handleLearnMoreActivate(e, currentPlant()), { passive: false });
+  els.quizLearnMore.addEventListener("click", (e) => handleLearnMoreActivate(e, quiz.current));
+  els.quizLearnMore.addEventListener("touchend", (e) => handleLearnMoreActivate(e, quiz.current), { passive: false });
   els.learnMoreClose.addEventListener("click", () => els.learnMorePanel.classList.add("hidden"));
   els.quizNext.addEventListener("click", () => startQuizRound());
 
