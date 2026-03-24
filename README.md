@@ -1,2 +1,2 @@
 # FloraFriend
-An app to teach me the local flora in the UK
+A personal use app to teach me the local flora in the UK
